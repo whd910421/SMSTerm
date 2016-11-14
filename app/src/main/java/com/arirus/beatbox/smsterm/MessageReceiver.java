@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by whd on 2016/11/13.
@@ -33,5 +34,6 @@ public class MessageReceiver extends BroadcastReceiver {
         }
         Log.i(TAG, "电话号码是"+address);
         Log.i(TAG,"内容是"+fullMessage);
+        Toast.makeText(context,"fullMessage",Toast.LENGTH_LONG).show();
     }
 }

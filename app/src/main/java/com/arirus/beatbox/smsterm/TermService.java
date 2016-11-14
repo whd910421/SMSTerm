@@ -1,10 +1,13 @@
 package com.arirus.beatbox.smsterm;
 
+import android.Manifest;
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,12 +28,13 @@ public class TermService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG,"onStartCommand");
-        if (sMessageReceiver == null) {
+         Log.i(TAG,"onStartCommand");
+         if (sMessageReceiver == null) {
             sMessageReceiver = new MessageReceiver();
-            Log.i(TAG, "onHandleIntent");
-            registerReceiver(sMessageReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
-        }
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("android.provider.Telephony.SMS_RECEIVED");
+            registerReceiver(sMessageReceiver,filter);
+         }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -47,8 +51,8 @@ public class TermService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG,"33333333");
-        unregisterReceiver(sMessageReceiver);
-
+        if (sMessageReceiver != null)
+            unregisterReceiver(sMessageReceiver);
     }
 
 
